@@ -17,8 +17,14 @@ A professional application for transforming Happy Birthday labels into a formatt
 ## Installation
 
 1. Make sure you have Python 3.6+ installed
-2. Download all files to a directory
-3. Run the application:
+2. Download all files to a directory    
+3. Run the appropriate installer for your system:
+
+Windows: Double-click install_and_run.bat
+
+Mac/Linux: Run chmod +x install_and_run.sh then ./install_and_run.sh
+
+4. Run the application:
 
 ```
 python birthday_bag_exporter.py
