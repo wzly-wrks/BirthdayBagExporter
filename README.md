@@ -20,9 +20,9 @@ A professional application for transforming Client Track exported Happy Birthday
 2. Download all files to a directory    
 3. Run the appropriate installer for your system:
 
-Windows: Double-click install_and_run.bat
+Windows: Double-click install_and_run_birthday_bag.bat
 
-Mac/Linux: Run chmod +x install_and_run.sh then ./install_and_run.sh
+Mac/Linux: Run chmod +x install_and_run_birthday_bag.sh then ./install_and_run_birthday_bag.sh
 
 4. Run the application:
 
@@ -69,8 +69,8 @@ The application will automatically install any required packages on first run.
 - `icon.png` / `icon.ico` - Application icons
 - `requirements.txt` - Package requirements
 - `README.md` - This documentation file
-- `install_and_run.bat` - Windows installer and launcher
-- `install_and_run.sh` - Mac/Linux installer and launcher
+- `install_and_run_birthday_bag.bat` - Windows installer and launcher
+- `install_and_run_birthday_bag.sh` - Mac/Linux installer and launcher
 
 ## Customization
 
