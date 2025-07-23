@@ -8,7 +8,6 @@ import subprocess
 import threading
 from openpyxl import load_workbook
 from openpyxl.styles import Border, Side, PatternFill, Font, Alignment
-from openpyxl.utils import get_column_letter
 
 # Check and install required packages
 def install_requirements():
