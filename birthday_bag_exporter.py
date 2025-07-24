@@ -31,10 +31,10 @@ try:
     from tkinterdnd2 import DND_FILES, TkinterDnD
 except ImportError:
     # If not available, install requirements and notify user to restart
-    root = tk.Tk()
-    root.withdraw()  # Hide the root window
+    temp_root = tk.Tk()
+    temp_root.withdraw()  # Hide the temporary root window
     install_requirements()
-    root.destroy()
+    temp_root.destroy()
     # Continue with basic tkinter for now
     TkinterDnD = tk.Tk
 
@@ -159,7 +159,7 @@ class BirthdayBagExporter:
             
             # Add drag-drop indicator
             self.drop_label.config(text="Drag and drop your Excel file here\nor click Browse to select a file")
-        except:
+        except Exception:
             # Drag and drop not available
             self.drop_label.config(text="Click Browse to select your Excel file")
     
@@ -507,18 +507,18 @@ class BirthdayBagExporter:
         cancel_button.pack(side=tk.LEFT, padx=5)
     
     def sort_key(self, van):
-        """Helper function to sort van numbers correctly"""
+        """Helper function to sort van numbers correctly."""
         if van.isdigit():
             return int(van)
-        elif van.startswith('VOLUNTEER-') and van[10:].isdigit():
+        if van.startswith('VOLUNTEER-') and van[10:].isdigit():
             return 100 + int(van[10:])  # Put VOLUNTEER-# after numeric vans
-        elif van.startswith('VOL-') and van[4:].isdigit():
+        if van.startswith('VOL-') and van[4:].isdigit():
             return 100 + int(van[4:])  # Put VOL-# after numeric vans
-        else:
-            # For other non-numeric values, put them at the end
-            return float('inf')
+        # For other non-numeric values, put them at the end
+        return float('inf')
     
     def add_route(self, day, route_var, van_var, scrollable_frame, day_data):
+        """Add a new route to the editor UI."""
         route = route_var.get().strip()
         van = van_var.get().strip()
         
@@ -544,8 +544,8 @@ class BirthdayBagExporter:
         
         # Recreate all route entries
         row = 1
-        for route_name, van_var in sorted_routes:
-            ttk.Entry(scrollable_frame, textvariable=van_var, width=10).grid(row=row, column=0, padx=5, pady=2)
+        for route_name, van_entry_var in sorted_routes:
+            ttk.Entry(scrollable_frame, textvariable=van_entry_var, width=10).grid(row=row, column=0, padx=5, pady=2)
             ttk.Label(scrollable_frame, text=route_name).grid(row=row, column=1, padx=5, pady=2, sticky="w")
             row += 1
         
@@ -894,11 +894,11 @@ def main():
     try:
         # Try to use TkinterDnD for drag and drop
         root = TkinterDnD.Tk()
-    except:
+    except Exception:
         # Fall back to regular Tk
         root = tk.Tk()
     
-    app = BirthdayBagExporter(root)
+    BirthdayBagExporter(root)
     root.mainloop()
 
 if __name__ == "__main__":
