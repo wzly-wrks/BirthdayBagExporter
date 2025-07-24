@@ -2,7 +2,9 @@
 
 A professional application for transforming Client Track exported Happy Birthday labels into a formatted route assignment spreadsheet.
 
-![Birthday Bag Exporter](icon.png)
+<p align="center">
+  <img src="icon.png" alt="Birthday Bag Exporter" width="128">
+</p>
 
 ## Features
 
