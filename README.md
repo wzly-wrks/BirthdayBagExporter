@@ -20,7 +20,7 @@ A professional application for transforming Client Track exported Happy Birthday
 2. Download all files to a directory    
 3. Run the appropriate installer for your system:
 
-Windows: Double-click install_and_run_birthday_bag.bat
+Windows: Double-click install_and_run_birthday_bag.bat (or use the provided .exe from Releases)
 
 Mac/Linux: Run chmod +x install_and_run_birthday_bag.sh then ./install_and_run_birthday_bag.sh
 
@@ -53,6 +53,11 @@ The application will automatically install any required packages on first run.
    - Update van numbers as needed
    - Add new routes using the form at the bottom of each tab
    - Click "Save Changes" when done
+
+## Releases
+
+For Windows users, a pre-built executable will be available in the Releases section.
+Mac and Linux users should run the application manually using the install_and_run_birthday_bag.sh script. Refer to the Installation section for details.
 
 ## Requirements
 
