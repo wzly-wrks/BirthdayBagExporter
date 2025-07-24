@@ -9,6 +9,15 @@ import threading
 from openpyxl import load_workbook
 from openpyxl.styles import Border, Side, PatternFill, Font, Alignment
 
+# Helper to load resources when bundled with PyInstaller
+def resource_path(relative_path: str) -> str:
+    """Get absolute path to resource, works for dev and for PyInstaller"""
+    try:
+        base_path = sys._MEIPASS  # type: ignore
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
 # Precompiled regular expressions for reuse
 ROUTE_PATTERN = re.compile(r"(MON|TUE|WED|THU|FRI|SAT|SUN)\s+\|\s+(.*?)$")
 DAY_PATTERN = re.compile(r"(MON|TUE|WED|THU|FRI|SAT|SUN)")
@@ -51,10 +60,12 @@ class BirthdayBagExporter:
         
         # Try to set the application icon
         try:
-            if os.path.exists("icon.ico"):
-                self.root.iconbitmap("icon.ico")
-            elif os.path.exists("icon.png"):
-                icon = tk.PhotoImage(file="icon.png")
+            ico_path = resource_path("icon.ico")
+            png_path = resource_path("icon.png")
+            if os.path.exists(ico_path):
+                self.root.iconbitmap(ico_path)
+            elif os.path.exists(png_path):
+                icon = tk.PhotoImage(file=png_path)
                 self.root.iconphoto(True, icon)
         except Exception as e:
             print(f"Could not load icon: {e}")
@@ -219,7 +230,7 @@ class BirthdayBagExporter:
     
     def toggle_theme(self):
         """Toggle between light and dark mode"""
-        self.dark_mode.set(not self.dark_mode.get())
+        # The associated Checkbutton already toggles the BooleanVar
         self.apply_theme()
     
     def create_widgets(self):
