@@ -1,4 +1,4 @@
-# Birthday Bag Exporter
+# WorkWave Birthday Tool
 
 A professional application for transforming Client Track exported Happy Birthday labels into a formatted route assignment spreadsheet.
 
