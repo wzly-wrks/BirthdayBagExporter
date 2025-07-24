@@ -9,6 +9,10 @@ import threading
 from openpyxl import load_workbook
 from openpyxl.styles import Border, Side, PatternFill, Font, Alignment
 
+# Precompiled regular expressions for reuse
+ROUTE_PATTERN = re.compile(r"(MON|TUE|WED|THU|FRI|SAT|SUN)\s+\|\s+(.*?)$")
+DAY_PATTERN = re.compile(r"(MON|TUE|WED|THU|FRI|SAT|SUN)")
+
 # Check and install required packages
 def install_requirements():
     try:
@@ -30,13 +34,14 @@ def install_requirements():
 try:
     from tkinterdnd2 import DND_FILES, TkinterDnD
 except ImportError:
-    # If not available, install requirements and notify user to restart
+    # If not available, attempt to install requirements and fall back
     root = tk.Tk()
     root.withdraw()  # Hide the root window
     install_requirements()
     root.destroy()
-    # Continue with basic tkinter for now
+    # Continue with basic tkinter without drag and drop
     TkinterDnD = tk.Tk
+    DND_FILES = None
 
 class BirthdayBagExporter:
     def __init__(self, root):
@@ -580,9 +585,6 @@ class BirthdayBagExporter:
         clients = []
         routes = []
         
-        # Pattern to match route information (day and route name)
-        route_pattern = re.compile(r'(MON|TUE|WED|THU|FRI|SAT|SUN)\s+\|\s+(.*?)$')
-        
         # Iterate through the dataframe to extract client and route information
         i = 0
         while i < len(df):
@@ -597,7 +599,7 @@ class BirthdayBagExporter:
                     for j in range(i + 2, min(i + 7, len(df))):
                         for col in range(df.shape[1]):
                             if pd.notna(df.iloc[j, col]) and isinstance(df.iloc[j, col], str):
-                                match = route_pattern.search(df.iloc[j, col])
+                                match = ROUTE_PATTERN.search(df.iloc[j, col])
                                 if match and not route_found:
                                     day = match.group(1)
                                     route_name = match.group(2)
@@ -631,7 +633,7 @@ class BirthdayBagExporter:
         for _, row in client_data.iterrows():
             route = row['Route']
             # Extract day and route name
-            match = re.match(r'(MON|TUE|WED|THU|FRI|SAT|SUN)\s+\|\s+(.*?)$', route)
+            match = ROUTE_PATTERN.match(route)
             if match:
                 day = match.group(1)
                 route_name = match.group(2).strip()
@@ -717,7 +719,7 @@ class BirthdayBagExporter:
         
         # Extract day from route
         client_data['Day'] = client_data['Route'].apply(
-            lambda x: re.match(r'(MON|TUE|WED|THU|FRI|SAT|SUN)', x).group(1) if re.match(r'(MON|TUE|WED|THU|FRI|SAT|SUN)', x) else ""
+            lambda x: DAY_PATTERN.match(x).group(1) if DAY_PATTERN.match(x) else ""
         )
         
         # Convert van numbers to integers for sorting (if possible)
