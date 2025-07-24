@@ -72,6 +72,9 @@ class BirthdayBagExporter:
         
         # Theme settings
         self.dark_mode = tk.BooleanVar(value=False)
+        # Use a style that allows color customization
+        self.style = ttk.Style()
+        self.style.theme_use("clam")
         self.apply_theme()
         
         # Route assignments dictionary - easily editable
@@ -181,7 +184,9 @@ class BirthdayBagExporter:
     
     def apply_theme(self):
         """Apply light or dark theme based on current setting"""
-        style = ttk.Style()
+        style = self.style
+        # Ensure the theme supports color customization
+        style.theme_use("clam")
         
         if self.dark_mode.get():
             # Dark mode
