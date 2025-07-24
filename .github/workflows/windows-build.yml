@@ -5,9 +5,13 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: windows-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -29,5 +33,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: dist/birthday_bag_exporter.exe
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
