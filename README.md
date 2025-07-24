@@ -56,8 +56,19 @@ The application will automatically install any required packages on first run.
 
 ## Releases
 
-For Windows users, a pre-built executable will be available in the Releases section.
-Mac and Linux users should run the application manually using the install_and_run_birthday_bag.sh script. Refer to the Installation section for details.
+Windows executables are built automatically by our GitHub Actions workflow whenever a new tag matching `v*` is pushed. They can be downloaded from the Releases page.
+Mac and Linux users should run the application manually using the `install_and_run_birthday_bag.sh` script. Refer to the Installation section for details.
+
+### Building From Source
+
+If you prefer to build the Windows executable yourself, run the following commands in a Windows environment:
+
+```cmd
+pip install -r requirements.txt pyinstaller
+pyinstaller --onefile --windowed --icon icon.ico birthday_bag_exporter.py
+```
+
+The resulting `birthday_bag_exporter.exe` file will be created in the `dist` folder.
 
 ## Requirements
 
