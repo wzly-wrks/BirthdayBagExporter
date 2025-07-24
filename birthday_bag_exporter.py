@@ -159,7 +159,7 @@ class BirthdayBagExporter:
             
             # Add drag-drop indicator
             self.drop_label.config(text="Drag and drop your Excel file here\nor click Browse to select a file")
-        except:
+        except Exception:
             # Drag and drop not available
             self.drop_label.config(text="Click Browse to select your Excel file")
     
@@ -380,8 +380,9 @@ class BirthdayBagExporter:
             # Show success message in the main thread
             self.root.after(0, lambda: messagebox.showinfo("Success", f"File processed successfully!\nOutput saved to {output_file}"))
         except Exception as e:
-            self.status_var.set(f"Error: {str(e)}")
-            self.root.after(0, lambda: messagebox.showerror("Error", f"An error occurred: {str(e)}"))
+            err_msg = str(e)
+            self.status_var.set(f"Error: {err_msg}")
+            self.root.after(0, lambda: messagebox.showerror("Error", f"An error occurred: {err_msg}"))
     
     def open_route_editor(self):
         # Create a new window for editing route assignments
@@ -544,11 +545,11 @@ class BirthdayBagExporter:
         
         # Recreate all route entries
         row = 1
-        for route_name, van_var in sorted_routes:
-            ttk.Entry(scrollable_frame, textvariable=van_var, width=10).grid(row=row, column=0, padx=5, pady=2)
+        for route_name, existing_van_var in sorted_routes:
+            ttk.Entry(scrollable_frame, textvariable=existing_van_var, width=10).grid(row=row, column=0, padx=5, pady=2)
             ttk.Label(scrollable_frame, text=route_name).grid(row=row, column=1, padx=5, pady=2, sticky="w")
             row += 1
-        
+
         # Clear entry fields
         route_var.set("")
         van_var.set("")
@@ -857,19 +858,17 @@ class BirthdayBagExporter:
         top_bar = ws.cell(row=1, column=1)
         top_bar.fill = black_fill
         top_bar.border = None
-        
+
         # Save the workbook
         wb.save(output_file)
-        
         self.update_progress(90, "Finalizing...")
-    
+
     def update_progress(self, value, message=None):
         """Update progress bar and status message"""
         self.progress["value"] = value
         if message:
             self.status_var.set(message)
         self.root.update_idletasks()
-    
     def process_route_data(self, report_file, output_file):
         """
         Main function to process route data
@@ -881,25 +880,26 @@ class BirthdayBagExporter:
         client_data = self.order_by_day_and_van(client_data)
         formatted_data = self.format_output(client_data)
         final_data = self.add_day_separators(formatted_data)
-        
         self.update_progress(75, f"Saving to {output_file}...")
         final_data.to_excel(output_file, sheet_name='Sheet1', index=False)
-        
+
         self.apply_excel_formatting(output_file)
-        
+
         self.update_progress(100, f"Done! Output saved to {output_file}")
         return final_data
+
 
 def main():
     try:
         # Try to use TkinterDnD for drag and drop
         root = TkinterDnD.Tk()
-    except:
+    except Exception:
         # Fall back to regular Tk
         root = tk.Tk()
-    
-    app = BirthdayBagExporter(root)
+
+    BirthdayBagExporter(root)
     root.mainloop()
+
 
 if __name__ == "__main__":
     main()
